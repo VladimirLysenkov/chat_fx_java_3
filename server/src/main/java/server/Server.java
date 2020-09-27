@@ -12,7 +12,7 @@ public class Server {
     private List<ClientHandler> clients;
     private AuthService authService;
 
-    private int PORT = 8189;
+    private int PORT = 8187;
     ServerSocket server = null;
     Socket socket = null;
 

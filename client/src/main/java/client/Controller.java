@@ -18,11 +18,11 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
-import java.io.IOException;
+import java.io.*;
 import java.net.Socket;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.ResourceBundle;
 
 public class Controller implements Initializable {
@@ -42,7 +42,7 @@ public class Controller implements Initializable {
     public ListView<String> clientList;
 
     private final String IP_ADDRESS = "localhost";
-    private final int PORT = 8189;
+    private final int PORT = 8187;
 
 
     private Socket socket;
@@ -117,6 +117,7 @@ public class Controller implements Initializable {
                             if (str.startsWith("/authok")) {
                                 nickname = str.split(" ", 2)[1];
                                 setAuthenticated(true);
+                                loadHistory();
                                 break;
                             }
 
@@ -149,6 +150,7 @@ public class Controller implements Initializable {
                                 }
                             } else {
                                 textArea.appendText(str + "\n");
+                                SaveHistory();
                             }
                         }
                     } catch (RuntimeException e) {
@@ -245,5 +247,48 @@ public class Controller implements Initializable {
 
 
         System.out.println(msg);
+
     }
+
+    private void SaveHistory() throws IOException {
+        try {
+            File history = new File("history.txt");
+            if (!history.exists()) {
+                System.out.println("Файла истории нет, создадим его");
+                history.createNewFile();
+            }
+            PrintWriter fileWriter = new PrintWriter(new FileWriter(history, false));
+
+            BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
+            bufferedWriter.write(textArea.getText());
+            bufferedWriter.close();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void loadHistory() throws IOException {
+        int posHistory = 100;
+        File history = new File("history.txt");
+        List<String> historyList = new ArrayList<>();
+        FileInputStream in = new FileInputStream(history);
+        BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(in));
+
+        String temp;
+        while ((temp = bufferedReader.readLine()) != null) {
+            historyList.add(temp);
+        }
+
+        if (historyList.size() > posHistory) {
+            for (int i = historyList.size() - posHistory; i <= (historyList.size() - 1); i++) {
+                textArea.appendText(historyList.get(i) + "\n");
+            }
+        } else {
+            for (int i = 0; i < posHistory; i++) {
+                System.out.println(historyList.get(i));
+            }
+        }
+    }
+
 }
