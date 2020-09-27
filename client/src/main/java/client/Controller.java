@@ -117,7 +117,7 @@ public class Controller implements Initializable {
                             if (str.startsWith("/authok")) {
                                 nickname = str.split(" ", 2)[1];
                                 setAuthenticated(true);
-                                loadHistory();
+                        //        loadHistory();
                                 break;
                             }
 
