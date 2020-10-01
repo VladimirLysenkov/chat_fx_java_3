@@ -134,6 +134,7 @@ public class Controller implements Initializable {
                         //цикл работы
                         while (true) {
                             String str = in.readUTF();
+                        //    saveHistory();
 
                             if (str.startsWith("/")) {
                                 if (str.equals("/end")) {
@@ -150,12 +151,15 @@ public class Controller implements Initializable {
                                 }
                             } else {
                                 textArea.appendText(str + "\n");
-                                SaveHistory();
+
                             }
                         }
-                    } catch (RuntimeException e) {
-                        e.printStackTrace();
                     } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    try {
+                        saveHistory();
+                    } catch (IOException | RuntimeException e) {
                         e.printStackTrace();
                     } finally {
                         System.out.println("Мы отключились от сервера");
@@ -168,7 +172,6 @@ public class Controller implements Initializable {
                     }
                 }
             }).start();
-
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -250,7 +253,7 @@ public class Controller implements Initializable {
 
     }
 
-    private void SaveHistory() throws IOException {
+    private void saveHistory() throws IOException {
         try {
             File history = new File("history.txt");
             if (!history.exists()) {
