@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class SimpleAuthService implements AuthService {
-    private class UserData {
+    private static class UserData {
         String login;
         String password;
         String nickname;
@@ -24,9 +24,9 @@ public class SimpleAuthService implements AuthService {
             users.add(new UserData("login" + i, "pass" + i, "nick" + i));
         }
 
-        users.add(new UserData("qwe" , "qwe" , "qwe" ));
-        users.add(new UserData("asd" , "asd" , "asd" ));
-        users.add(new UserData("zxc" , "zxc" , "zxc" ));
+        users.add(new UserData("qwe", "qwe", "qwe"));
+        users.add(new UserData("asd", "asd", "asd"));
+        users.add(new UserData("zxc", "zxc", "zxc"));
     }
 
     @Override
@@ -46,7 +46,7 @@ public class SimpleAuthService implements AuthService {
                 return false;
             }
         }
-        users.add(new UserData(login , password, nickname ));
+        users.add(new UserData(login, password, nickname));
         return true;
     }
 }
